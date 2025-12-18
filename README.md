@@ -28,12 +28,13 @@ Use the [**notebook template**](templates/notebook-template.ipynb) to create cus
 ## 🚀 Quick Start
 
 **Run an example notebook:**
-1. Browse [`notebooks/`](notebooks/) and choose a notebook
-2. Copy it to your workspace and update configuration (e.g., `WORKSPACE_NAME`)
-3. Upload and run in your Sentinel environment
+1. List available notebooks: `python scripts/setup-workspace.py --list`
+2. Copy to workspace: `python scripts/setup-workspace.py --copy risk-scoring/user-risk-score-simple`
+3. Update configuration (e.g., `WORKSPACE_NAME`)
+4. Upload and run in your Sentinel environment
 
 **Create your own notebook:**
-1. Copy [`templates/notebook-template.ipynb`](templates/notebook-template.ipynb) to your workspace
+1. Create from template: `python scripts/setup-workspace.py --create my-category/my-analysis`
 2. Follow the AI-assisted workflow to design and build your analysis
 
 [View detailed setup guide →](docs/getting-started.md)
@@ -47,6 +48,7 @@ Use the [**notebook template**](templates/notebook-template.ipynb) to create cus
 ## 🔧 Tools & Scripts
 
 This repository includes helpful scripts:
+- [`setup-workspace.py`](scripts/) - Copy notebooks to workspace or create new ones from templates
 - [`sanitize-notebook.py`](scripts/) - Remove outputs and credentials before publishing
 
 [View all scripts →](scripts/)

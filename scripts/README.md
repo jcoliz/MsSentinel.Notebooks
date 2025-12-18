@@ -27,18 +27,28 @@ python scripts/sanitize-notebook.py --dry-run workspace/threat-hunting/example-n
 ```
 
 ### setup-workspace.py
-*To be implemented in Phase 2*
+**Status: Implemented**
 
 Helps set up workspace environment by copying notebooks and creating new ones from templates.
 
 Usage:
 ```bash
+# List available notebooks
+python scripts/setup-workspace.py --list
+
 # Copy existing notebook to workspace
-python scripts/setup-workspace.py --copy threat-hunting/example-notebook
+python scripts/setup-workspace.py --copy risk-scoring/user-risk-score-simple
 
 # Create new notebook from template
 python scripts/setup-workspace.py --create threat-hunting/new-notebook
 ```
+
+Features:
+- Lists all published notebooks with workspace status
+- Copies published notebooks to workspace maintaining directory structure
+- Creates new notebooks from templates with placeholder documentation
+- Interactive confirmation for overwriting existing notebooks
+- Generates starter documentation (README.md, DESIGN.md, IMPLEMENTATION.md)
 
 ### validate-notebooks.py
 *To be implemented in Phase 4*

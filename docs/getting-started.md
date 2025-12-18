@@ -57,17 +57,23 @@ Read the notebook's README.md to understand:
 
 ### Step 2: Copy to Workspace
 
-Copy the notebook to your workspace directory (which is gitignored):
+Copy the notebook to your workspace directory (which is gitignored) using the setup script:
 
 ```bash
-# Copy the entire notebook directory
-cp -r notebooks/risk-scoring/user-risk-score-simple workspace/risk-scoring/
+# Use the setup script (recommended)
+python scripts/setup-workspace.py --copy risk-scoring/user-risk-score-simple
 ```
 
-**Windows PowerShell:**
-```powershell
+**Alternative (manual copy):**
+```bash
+# Unix/Mac
+cp -r notebooks/risk-scoring/user-risk-score-simple workspace/risk-scoring/
+
+# Windows PowerShell
 Copy-Item -Recurse notebooks/risk-scoring/user-risk-score-simple workspace/risk-scoring/
 ```
+
+**Tip:** Run `python scripts/setup-workspace.py --list` to see all available notebooks.
 
 ### Step 3: Configure the Notebook
 
@@ -109,16 +115,28 @@ Common configuration items:
 
 Use the notebook template to build custom security analytics:
 
-### Step 1: Copy the Template
+### Step 1: Create from Template
 
-Copy the template to your workspace:
+Create a new notebook structure from the template using the setup script:
 
 ```bash
-cp templates/notebook-template.ipynb workspace/my-analysis/notebook.ipynb
+# Use the setup script (recommended) - creates full structure
+python scripts/setup-workspace.py --create my-category/my-analysis
 ```
 
-**Windows PowerShell:**
-```powershell
+This creates:
+- `workspace/my-category/my-analysis/my-analysis.ipynb` (from template)
+- `workspace/my-category/my-analysis/README.md` (placeholder)
+- `workspace/my-category/my-analysis/DESIGN.md` (placeholder)
+- `workspace/my-category/my-analysis/IMPLEMENTATION.md` (placeholder)
+
+**Alternative (manual):**
+```bash
+# Unix/Mac
+mkdir -p workspace/my-analysis
+cp templates/notebook-template.ipynb workspace/my-analysis/notebook.ipynb
+
+# Windows PowerShell
 New-Item -ItemType Directory -Path workspace/my-analysis -Force
 Copy-Item templates/notebook-template.ipynb workspace/my-analysis/notebook.ipynb
 ```
@@ -270,19 +288,22 @@ summary = (
 
 Before sharing or committing a notebook to the repository:
 
-### 1. Sanitize the Notebook
+### 1. Sanitize and Publish
 
-Use the sanitization script to remove outputs and credentials:
+Use the sanitization script to remove outputs, replace credentials, and publish to the [`notebooks/`](../notebooks/) directory:
 
 ```bash
-python scripts/sanitize-notebook.py workspace/my-analysis/notebook.ipynb
+# Sanitize and publish to notebooks/ directory
+python scripts/sanitize-notebook.py --publish workspace/my-category/my-analysis/
 ```
 
 This will:
-- Remove all cell outputs
+- Remove all cell outputs and execution counts
 - Replace credentials with placeholders (e.g., `<YOUR_WORKSPACE_NAME>`)
 - Validate required documentation files exist
-- Create a sanitized copy in `notebooks/`
+- Copy sanitized files to `notebooks/my-category/my-analysis/`
+
+**Note:** Your workspace original remains unchanged with outputs intact.
 
 ### 2. Verify Documentation
 
