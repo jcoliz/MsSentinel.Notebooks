@@ -84,30 +84,27 @@ class NotebookSanitizer:
     
     def validate_structure(self) -> bool:
         """
-        Validate that required documentation files exist.
+        Validate that required files exist (only notebook is required).
         
         Returns:
             True if structure is valid, False otherwise
         """
         self.log("Validating directory structure...")
         
-        required_files = ['README.md', 'DESIGN.md', 'IMPLEMENTATION.md']
-        missing_files = []
-        
-        for filename in required_files:
+        # Check for optional documentation files
+        optional_files = ['README.md', 'DESIGN.md', 'IMPLEMENTATION.md']
+        for filename in optional_files:
             filepath = self.notebook_dir / filename
-            if not filepath.exists():
-                missing_files.append(filename)
-                self.issues_found.append(f"Missing required file: {filename}")
+            if filepath.exists():
+                self.log(f"Found optional file: {filename}")
+            else:
+                self.log(f"Optional file not present: {filename}", 'warning')
         
-        # Find .ipynb files
+        # Find .ipynb files (required)
         notebook_files = list(self.notebook_dir.glob('*.ipynb'))
         if not notebook_files:
             self.issues_found.append("No .ipynb file found in directory")
-            missing_files.append("*.ipynb")
-        
-        if missing_files:
-            self.log(f"Missing required files: {', '.join(missing_files)}", 'error')
+            self.log("Missing required file: *.ipynb", 'error')
             return False
         
         self.log(f"Structure validation passed", 'success')
@@ -333,7 +330,7 @@ class NotebookSanitizer:
             # Create target directory
             target_dir.mkdir(parents=True, exist_ok=True)
             
-            # Copy documentation files (no sanitization needed)
+            # Copy optional documentation files (no sanitization needed)
             doc_files = ['README.md', 'DESIGN.md', 'IMPLEMENTATION.md']
             for filename in doc_files:
                 source = self.notebook_dir / filename
@@ -342,6 +339,8 @@ class NotebookSanitizer:
                 if source.exists():
                     shutil.copy2(source, target)
                     self.log(f"Copied: {filename}")
+                else:
+                    self.log(f"Skipping optional file (not present): {filename}")
             
             # Sanitize notebooks directly to target directory
             notebook_files = list(self.notebook_dir.glob('*.ipynb'))
