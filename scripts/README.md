@@ -51,15 +51,44 @@ Features:
 - Generates starter documentation (README.md, DESIGN.md, IMPLEMENTATION.md)
 
 ### validate-notebooks.py
-*To be implemented in Phase 4*
+**Status: Implemented**
 
 CI/CD validation script to ensure all published notebooks are properly sanitized.
 
+Usage:
+```bash
+# Validate all notebooks in notebooks/ directory
+python scripts/validate-notebooks.py
+
+# Validate notebooks in a specific subdirectory
+python scripts/validate-notebooks.py --directory notebooks/risk-scoring/
+
+# Strict mode: treat warnings as errors
+python scripts/validate-notebooks.py --strict
+
+# Verbose output
+python scripts/validate-notebooks.py --verbose
+```
+
+Features:
+- Validates notebooks have no cell outputs or execution counts
+- Checks that credentials use template placeholders (not real values)
+- Scans for potential secrets (Bearer tokens, GUIDs, Azure URLs)
+- Validates WORKSPACE_NAME uses `<YOUR_WORKSPACE_NAME>` placeholder
+- Logs presence of optional documentation files in verbose mode (no warnings/errors)
+- Supports strict mode where warnings become errors (useful for CI/CD)
+- Returns appropriate exit codes for CI/CD integration
+
+Exit Codes:
+- 0: All notebooks passed validation
+- 1: Validation errors found
+- 2: Warnings found (strict mode only)
+
 ## Implementation Priority
 
-1. **Phase 1**: `sanitize-notebook.py` - Critical for preventing accidental credential commits
-2. **Phase 2**: `setup-workspace.py` - Streamlines workflow for contributors
-3. **Phase 4**: `validate-notebooks.py` - Automated validation for CI/CD
+1. **Phase 1**: [`sanitize-notebook.py`](sanitize-notebook.py) - ✅ **Implemented** - Critical for preventing accidental credential commits
+2. **Phase 2**: [`setup-workspace.py`](setup-workspace.py) - ✅ **Implemented** - Streamlines workflow for contributors
+3. **Phase 4**: [`validate-notebooks.py`](validate-notebooks.py) - ✅ **Implemented** - Automated validation for CI/CD
 
 ## Contributing
 
