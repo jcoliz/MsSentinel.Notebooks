@@ -8,6 +8,10 @@ This directory contains example Jupyter notebooks for Microsoft Sentinel data la
 
 Training notebook for learning Microsoft Sentinel analytics through basic user risk scoring. Calculates 50-point risk scores based on IP diversity, sign-in frequency, and activity consistency patterns. Perfect for new Sentinel users, security analysts learning PySpark, and risk scoring pilots. Uses SigninLogs and EntraUsers tables only.
 
+### [User Risk Score Complete](risk-scoring/user-risk-score-complete/README.md)
+
+Production-ready comprehensive user risk scoring system for SOC teams. Calculates 100-point risk scores across 6 categories: sign-in behavior (30 pts), application access (25 pts), privileged activity (20 pts), security alerts (15 pts), geographic risk (5 pts), and temporal risk (5 pts). Uses SigninLogs, EntraUsers, AuditLogs, and SecurityAlert tables with graceful degradation for optional sources. Ideal for threat hunting, insider threat programs, and automated risk workflows.
+
 ## Organization
 
 Further notebooks will be organized by category based on their primary use case, *i.e.*
