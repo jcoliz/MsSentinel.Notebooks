@@ -41,7 +41,7 @@ Use the [**notebook template**](templates/notebook-template.ipynb) to create cus
 ## 📖 Documentation
 
 - [Getting Started](docs/getting-started.md) - Complete setup and usage guide
-- [Repository Structure](docs/) - How this repository is organized
+- [Repository Structure](docs/repository-structure.md) - How this repository is organized
 - [Notebook Template](templates/) - AI-assisted notebook development workflow
 
 ## 🔧 Tools & Scripts
