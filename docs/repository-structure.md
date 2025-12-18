@@ -35,7 +35,9 @@ MsSentinel.Notebooks/
 │
 ├── scripts/                       # Automation and utilities
 │   ├── README.md                  # Script documentation
-│   └── sanitize-notebook.py      # Removes outputs and credentials
+│   ├── setup-workspace.py         # Copies notebooks and creates from templates
+│   ├── sanitize-notebook.py       # Removes outputs and credentials
+│   └── validate-notebooks.py      # CI/CD validation checks
 │
 └── templates/                     # Templates for new notebooks
     ├── README.md                  # Template usage guide
@@ -84,7 +86,9 @@ The workspace mirrors the category/notebook-name structure of [`notebooks/`](../
 Automation tools for the repository workflow.
 
 **Key scripts:**
+- [`setup-workspace.py`](../scripts/setup-workspace.py) - Copies published notebooks to workspace or creates new notebooks from templates
 - [`sanitize-notebook.py`](../scripts/sanitize-notebook.py) - Removes outputs and replaces credentials with placeholders before publishing
+- [`validate-notebooks.py`](../scripts/validate-notebooks.py) - Validates notebook structure and documentation (CI/CD integration)
 
 ### [`templates/`](../templates/)
 
@@ -97,20 +101,33 @@ Starting points for creating new notebooks, including:
 ### For End Users (Using Notebooks)
 
 1. Clone the repository
-2. Copy a notebook from [`notebooks/`](../notebooks/) to [`workspace/`](../workspace/), maintaining the category structure
+2. Use [`setup-workspace.py`](../scripts/setup-workspace.py) to copy a notebook to [`workspace/`](../workspace/):
+   ```bash
+   python scripts/setup-workspace.py --copy risk-scoring/user-risk-score-simple
+   ```
 3. Update placeholder values with your real workspace details
 4. Run and modify the notebook as needed
 5. Your workspace changes stay local (gitignored)
 
 ### For Contributors (Publishing Notebooks)
 
-1. Develop in [`workspace/`](../workspace/) with real credentials
-2. Create or update documentation files (README.md, DESIGN.md, IMPLEMENTATION.md)
-3. Run [`sanitize-notebook.py`](../scripts/sanitize-notebook.py) to remove outputs and credentials
-4. Copy sanitized files to [`notebooks/`](../notebooks/)
+1. Create a new notebook in [`workspace/`](../workspace/) using [`setup-workspace.py`](../scripts/setup-workspace.py):
+   ```bash
+   python scripts/setup-workspace.py --create threat-hunting/new-notebook
+   ```
+   Or copy an existing one to modify:
+   ```bash
+   python scripts/setup-workspace.py --copy risk-scoring/user-risk-score-simple
+   ```
+2. Develop the notebook with real credentials and test thoroughly
+3. Create or update documentation files (README.md, DESIGN.md, IMPLEMENTATION.md)
+4. Run [`sanitize-notebook.py`](../scripts/sanitize-notebook.py) to remove outputs and credentials:
+   ```bash
+   python scripts/sanitize-notebook.py --publish workspace/category/notebook-name
+   ```
 5. Commit and push to the repository
 
-See [`scripts/README.md`](../scripts/README.md) for detailed sanitization workflow.
+See [`scripts/README.md`](../scripts/README.md) for detailed workflow documentation.
 
 ## Configuration Management
 
