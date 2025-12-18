@@ -182,12 +182,13 @@ class NotebookSanitizer:
         
         return sanitized_cell
     
-    def sanitize_notebook(self, notebook_path: Path) -> bool:
+    def sanitize_notebook(self, notebook_path: Path, output_path: Path = None) -> bool:
         """
         Sanitize a Jupyter notebook file.
         
         Args:
-            notebook_path: Path to the notebook file
+            notebook_path: Path to the notebook file to read
+            output_path: Path where sanitized notebook should be written (if None, modifies in place)
             
         Returns:
             True if successful, False otherwise
@@ -202,7 +203,7 @@ class NotebookSanitizer:
             # Sanitize cells
             if 'cells' in notebook:
                 notebook['cells'] = [
-                    self.sanitize_cell(cell, i) 
+                    self.sanitize_cell(cell, i)
                     for i, cell in enumerate(notebook['cells'])
                 ]
             
@@ -219,18 +220,22 @@ class NotebookSanitizer:
                     }
                 self.changes_made.append("Cleared notebook metadata")
             
-            # Create backup if not dry run
+            # Determine output location
+            write_path = output_path if output_path else notebook_path
+            
+            # Create backup if modifying in place and not dry run
             if not self.dry_run:
-                backup_path = notebook_path.with_suffix('.ipynb.bak')
-                shutil.copy2(notebook_path, backup_path)
-                self.log(f"Created backup: {backup_path.name}")
+                if not output_path:  # Only backup when modifying in place
+                    backup_path = notebook_path.with_suffix('.ipynb.bak')
+                    shutil.copy2(notebook_path, backup_path)
+                    self.log(f"Created backup: {backup_path.name}")
                 
                 # Write sanitized notebook
-                with open(notebook_path, 'w', encoding='utf-8') as f:
+                with open(write_path, 'w', encoding='utf-8') as f:
                     json.dump(notebook, f, indent=1, ensure_ascii=False)
                     f.write('\n')  # Add trailing newline
                 
-                self.log(f"Sanitized notebook written", 'success')
+                self.log(f"Sanitized notebook written to: {write_path.name}", 'success')
             else:
                 self.log("Dry run: No changes written")
             
@@ -266,7 +271,8 @@ class NotebookSanitizer:
     
     def publish_to_notebooks(self) -> bool:
         """
-        Copy sanitized notebook directory to notebooks/ directory.
+        Sanitize and publish notebook directory to notebooks/ directory.
+        This preserves the workspace original with outputs intact.
         
         Returns:
             True if successful, False otherwise
@@ -294,17 +300,24 @@ class NotebookSanitizer:
             # Create target directory
             target_dir.mkdir(parents=True, exist_ok=True)
             
-            # Copy files
-            files_to_copy = ['README.md', 'DESIGN.md', 'IMPLEMENTATION.md']
-            files_to_copy.extend([f.name for f in self.notebook_dir.glob('*.ipynb')])
-            
-            for filename in files_to_copy:
+            # Copy documentation files (no sanitization needed)
+            doc_files = ['README.md', 'DESIGN.md', 'IMPLEMENTATION.md']
+            for filename in doc_files:
                 source = self.notebook_dir / filename
                 target = target_dir / filename
                 
                 if source.exists():
                     shutil.copy2(source, target)
                     self.log(f"Copied: {filename}")
+            
+            # Sanitize notebooks directly to target directory
+            notebook_files = list(self.notebook_dir.glob('*.ipynb'))
+            for notebook_path in notebook_files:
+                target_notebook = target_dir / notebook_path.name
+                # Sanitize from workspace to notebooks directory
+                if not self.sanitize_notebook(notebook_path, target_notebook):
+                    return False
+                self.log(f"Sanitized and copied: {notebook_path.name}")
             
             self.log(f"Published to {target_dir}", 'success')
             return True
@@ -404,12 +417,20 @@ Examples:
     print(f"Publish: {args.publish}")
     print(f"{'='*60}\n")
     
-    # Sanitize
-    success = sanitizer.sanitize_directory()
+    # Two different workflows:
+    # 1. --publish: Sanitize directly to notebooks/ (preserves workspace)
+    # 2. No --publish: Sanitize in-place (modifies workspace)
     
-    # Publish if requested and sanitization succeeded
-    if success and args.publish:
-        success = sanitizer.publish_to_notebooks()
+    if args.publish:
+        # Validate structure first
+        if not sanitizer.validate_structure():
+            success = False
+        else:
+            # Publish (which includes sanitization to target)
+            success = sanitizer.publish_to_notebooks()
+    else:
+        # Sanitize in place
+        success = sanitizer.sanitize_directory()
     
     # Print summary
     sanitizer.print_summary()
