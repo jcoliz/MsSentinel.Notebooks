@@ -27,11 +27,6 @@ Use the [**notebook template**](templates/notebook-template.ipynb) to create cus
 
 ## 🚀 Quick Start
 
-**Prerequisites:**
-- Azure subscription with [Microsoft Sentinel data lake](https://learn.microsoft.com/en-us/azure/sentinel/datalake/sentinel-lake-overview) configured
-- Access to a Sentinel workspace
-- Permissions to run notebooks in the Sentinel Spark environment
-
 **Run an example notebook:**
 1. Browse [`notebooks/`](notebooks/) and choose a notebook
 2. Copy it to your workspace and update configuration (e.g., `WORKSPACE_NAME`)
@@ -41,10 +36,12 @@ Use the [**notebook template**](templates/notebook-template.ipynb) to create cus
 1. Copy [`templates/notebook-template.ipynb`](templates/notebook-template.ipynb) to your workspace
 2. Follow the AI-assisted workflow to design and build your analysis
 
+[View detailed setup guide →](docs/getting-started.md)
+
 ## 📖 Documentation
 
+- [Getting Started](docs/getting-started.md) - Complete setup and usage guide
 - [Repository Structure](docs/) - How this repository is organized
-- [Getting Started](docs/) - Detailed setup and usage guide
 - [Notebook Template](templates/) - AI-assisted notebook development workflow
 
 ## 🔧 Tools & Scripts
