@@ -55,9 +55,11 @@ Read the notebook's README.md to understand:
 - Prerequisites and permissions
 - Expected outputs
 
-### Step 2: Copy to Workspace
+### Step 2: Configure the Notebook
 
-Copy the notebook to your workspace directory (which is gitignored) using the setup script:
+**For Experimentation Only:** If you're just running the notebook once to see how it works, you can skip copying to workspace. Open the notebook directly from [`notebooks/`](../notebooks/) and proceed to configuration.
+
+**For Development/Contributing:** If you plan to modify the notebook or contribute changes back to the repository, copy it to your workspace directory first (which is gitignored):
 
 ```bash
 # Use the setup script (recommended)
@@ -75,7 +77,7 @@ Copy-Item -Recurse notebooks/risk-scoring/user-risk-score-simple workspace/risk-
 
 **Tip:** Run `python scripts/setup-workspace.py --list` to see all available notebooks.
 
-### Step 3: Configure the Notebook
+### Step 3: Configure Your Copy
 
 Open the notebook in your workspace and update configuration placeholders:
 
