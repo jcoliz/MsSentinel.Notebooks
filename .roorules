@@ -1,0 +1,59 @@
+# Project Conventions
+
+This document captures project-specific conventions and rules for this repository.
+
+## Commit Message Convention
+
+When completing tasks that modify repository files, always include a conventional commit message in the task completion readout.
+
+**Requirements**:
+- Follow [Conventional Commits](https://www.conventionalcommits.org/) format
+- Keep under 100 words
+- Include type prefix: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`, etc.
+- Use imperative mood ("add" not "added")
+- Include `BREAKING CHANGE:` footer when applicable
+
+**Example**:
+```
+feat: add notebook sanitization script
+
+Implement sanitize-notebook.py to remove outputs and replace credentials with placeholders. Includes dry-run mode and validation checks for required documentation files.
+
+Prevents accidental commits of sensitive data.
+```
+
+**Why**: Provides immediate, standardized commit messages for direct use, improving git history quality and making changes easy to understand.
+
+## Documentation Structure
+
+- User-facing documentation goes in `docs/`
+- Work-in-progress planning and design documents go in `docs/wip/`
+- Each notebook requires three documentation files: README.md, DESIGN.md, IMPLEMENTATION.md
+
+## Workspace vs Published Notebooks
+
+- **workspace/**: Private development area, gitignored, contains real credentials
+- **notebooks/**: Public published area, sanitized, no outputs or credentials
+- Always sanitize notebooks before publishing from workspace to notebooks
+
+## Category Organization
+
+- Categories created organically as notebooks are added
+- Don't create empty category directories
+- Suggested categories: threat-hunting, incident-response, reporting, data-exploration, automation
+
+## Configuration Management
+
+- All configuration must be inline in notebooks (no external config files)
+- Use template placeholders: `WORKSPACE_NAME = "<YOUR_WORKSPACE_NAME>"`
+- Sanitization script handles placeholder replacement
+
+## Script Implementation Priority
+
+1. Phase 1: `sanitize-notebook.py` (critical for security)
+2. Phase 2: `setup-workspace.py` (developer convenience)
+3. Phase 4: `validate-notebooks.py` (CI/CD integration)
+
+---
+
+*This document will evolve as the project matures. Suggestions for new conventions should be discussed in pull requests.*

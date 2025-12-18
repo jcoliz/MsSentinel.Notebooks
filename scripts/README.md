@@ -5,7 +5,7 @@ This directory contains utility scripts for managing notebooks in this repositor
 ## Scripts
 
 ### sanitize-notebook.py
-*To be implemented in Phase 1*
+**Status: Implemented**
 
 Sanitizes notebooks before publishing by:
 - Removing all cell outputs and execution counts
