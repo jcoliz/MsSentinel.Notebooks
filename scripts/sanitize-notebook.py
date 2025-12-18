@@ -53,16 +53,8 @@ class NotebookSanitizer:
     ]
     
     # Patterns for values that should be replaced with placeholders
-    REPLACEMENT_PATTERNS = [
-        # Azure workspace names (alphanumeric, hyphens, 1-50 chars)
-        (r'[a-z0-9][a-z0-9\-]{0,48}[a-z0-9](?=\.azuresynapse\.net)', 'workspace_name'),
-        # Azure subscription IDs (GUIDs)
-        (r'(?<=subscription[s]?[/_])[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', 
-         'subscription_id'),
-        # Azure tenant IDs (GUIDs in tenant context)
-        (r'(?<=tenant[s]?[/_])[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}', 
-         'tenant_id'),
-    ]
+    # Note: These patterns are not currently used; WORKSPACE_NAME replacement is handled directly
+    REPLACEMENT_PATTERNS = []
     
     def __init__(self, notebook_dir: Path, dry_run: bool = False, verbose: bool = False):
         """
@@ -144,6 +136,33 @@ class NotebookSanitizer:
         
         return findings
     
+    def replace_credentials(self, text: str) -> tuple[str, list[str]]:
+        """
+        Replace credential values with placeholders.
+        
+        Args:
+            text: Text to sanitize
+            
+        Returns:
+            Tuple of (sanitized_text, list of replacements made)
+        """
+        replacements = []
+        sanitized = text
+        
+        # Replace WORKSPACE_NAME = "value" pattern
+        workspace_pattern = r'WORKSPACE_NAME\s*=\s*["\']([^"\'<>]+)["\']'
+        matches = list(re.finditer(workspace_pattern, sanitized))
+        for match in matches:
+            old_value = match.group(1)
+            if not old_value.startswith('<YOUR_'):
+                sanitized = sanitized.replace(
+                    match.group(0),
+                    f'WORKSPACE_NAME = "{self.PLACEHOLDERS["workspace_name"]}"'
+                )
+                replacements.append(f"Replaced workspace name: {old_value}")
+        
+        return sanitized, replacements
+    
     def sanitize_cell(self, cell: Dict[str, Any], cell_index: int) -> Dict[str, Any]:
         """
         Sanitize a single notebook cell.
@@ -167,14 +186,28 @@ class NotebookSanitizer:
                 sanitized_cell['execution_count'] = None
                 self.changes_made.append(f"Cleared execution count from cell {cell_index}")
         
-        # Scan source for secrets
+        # Get source content
         source = cell.get('source', [])
         if isinstance(source, list):
             source_text = ''.join(source)
         else:
             source_text = source
         
-        secrets = self.scan_for_secrets(source_text, f"cell {cell_index}")
+        # Replace credentials in source
+        sanitized_source, replacements = self.replace_credentials(source_text)
+        if replacements:
+            # Update the cell source
+            if isinstance(source, list):
+                # Split back into list format (preserve line structure)
+                sanitized_cell['source'] = sanitized_source.splitlines(keepends=True)
+            else:
+                sanitized_cell['source'] = sanitized_source
+            
+            for replacement in replacements:
+                self.changes_made.append(f"Cell {cell_index}: {replacement}")
+        
+        # Scan for remaining secrets
+        secrets = self.scan_for_secrets(sanitized_source, f"cell {cell_index}")
         for description, matched_text, context in secrets:
             warning = f"{description} found in {context}: '{matched_text[:50]}...'"
             self.log(warning, 'warning')
