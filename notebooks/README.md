@@ -2,15 +2,20 @@
 
 This directory contains example Jupyter notebooks for Microsoft Sentinel data lake operations. Each notebook demonstrates specific security scenarios and operations.
 
+## Risk Scoring Notebooks
+
+### [User Risk Score Simple](risk-scoring/user-risk-score-simple/README.md)
+
+Training notebook for learning Microsoft Sentinel analytics through basic user risk scoring. Calculates 50-point risk scores based on IP diversity, sign-in frequency, and activity consistency patterns. Perfect for new Sentinel users, security analysts learning PySpark, and risk scoring pilots. Uses SigninLogs and EntraUsers tables only.
+
 ## Organization
 
-Notebooks are organized by category based on their primary use case:
+Further notebooks will be organized by category based on their primary use case, *i.e.*
 
 - **threat-hunting/** - Proactive security investigations and threat hunting scenarios
 - **incident-response/** - Reactive security operations and incident investigation
 - **reporting/** - Analytics, dashboards, and reporting workflows
 - **data-exploration/** - Data discovery, profiling, and exploration
-- **automation/** - Scheduled tasks, maintenance, and automated operations
 
 Categories are created organically as notebooks are added. If you're contributing a new notebook, choose the most appropriate category or propose a new one if needed.
 
@@ -60,9 +65,3 @@ Key points:
 - Use the workspace directory for development with real data
 - Include complete documentation (README, DESIGN, IMPLEMENTATION)
 - Follow the established category structure
-
-## Notebook Index
-
-<!-- This section will be populated as notebooks are added -->
-
-Currently, there are no published notebooks in this repository. Check back soon as we add examples!
