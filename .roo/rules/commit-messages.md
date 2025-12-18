@@ -1,8 +1,4 @@
-# Project Conventions
-
-This document captures project-specific conventions and rules for this repository.
-
-## Commit Message Convention
+# Commit Message Convention
 
 When completing tasks that modify repository files, always include a conventional commit message in the task completion readout.
 
