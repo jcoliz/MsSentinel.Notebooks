@@ -163,7 +163,7 @@ Open the template and fill in the task description section with details:
 
 ### Step 3: Three-Phase Development with AI
 
-Work with an AI assistant through these phases:
+Consider leveraging an AI assistant through these phases:
 
 #### Phase 1: Design (15-30 minutes)
 Ask your AI: *"Based on my description above and using the Microsoft Sentinel documentation links provided, create a detailed design document for this notebook."*
@@ -293,7 +293,7 @@ summary = (
 
 ## Publishing Your Notebook
 
-Before sharing or committing a notebook to the repository:
+Before sharing or committing a notebook to this repository:
 
 ### 1. Sanitize and Publish
 
