@@ -1,10 +1,12 @@
-# Repository Structure
+# Repository Structure Reference
 
-This document describes the organization and purpose of directories and files in this repository.
+This reference document describes the organization, purpose, and conventions for directories and files in this repository.
+
+> **For step-by-step instructions**, see the [Getting Started Guide](getting-started.md).
 
 ## Overview
 
-The repository is organized to separate working notebooks (with real credentials) from published notebooks (sanitized for public sharing), while providing clear documentation and tooling for both contributors and end users.
+The repository separates working notebooks (with real credentials) from published notebooks (sanitized for public sharing), with clear tooling and documentation for both contributors and end users.
 
 ```
 MsSentinel.Notebooks/
@@ -96,38 +98,15 @@ Starting points for creating new notebooks, including:
 - Notebook template with standard structure
 - Documentation templates (README, DESIGN, IMPLEMENTATION)
 
-## Workflow
+## Workflows
 
-### For End Users (Using Notebooks)
+For step-by-step tutorials on using or contributing to notebooks, see the [Getting Started Guide](getting-started.md).
 
-1. Clone the repository
-2. Use [`setup-workspace.py`](../scripts/setup-workspace.py) to copy a notebook to [`workspace/`](../workspace/):
-   ```bash
-   python scripts/setup-workspace.py --copy risk-scoring/user-risk-score-simple
-   ```
-3. Update placeholder values with your real workspace details
-4. Run and modify the notebook as needed
-5. Your workspace changes stay local (gitignored)
+**Quick reference:**
+- **Using notebooks**: Copy from [`notebooks/`](../notebooks/) to [`workspace/`](../workspace/) using [`setup-workspace.py`](../scripts/setup-workspace.py), configure, and run
+- **Contributing notebooks**: Develop in [`workspace/`](../workspace/), sanitize with [`sanitize-notebook.py`](../scripts/sanitize-notebook.py), then commit from [`notebooks/`](../notebooks/)
 
-### For Contributors (Publishing Notebooks)
-
-1. Create a new notebook in [`workspace/`](../workspace/) using [`setup-workspace.py`](../scripts/setup-workspace.py):
-   ```bash
-   python scripts/setup-workspace.py --create threat-hunting/new-notebook
-   ```
-   Or copy an existing one to modify:
-   ```bash
-   python scripts/setup-workspace.py --copy risk-scoring/user-risk-score-simple
-   ```
-2. Develop the notebook with real credentials and test thoroughly
-3. Create or update documentation files (README.md, DESIGN.md, IMPLEMENTATION.md)
-4. Run [`sanitize-notebook.py`](../scripts/sanitize-notebook.py) to remove outputs and credentials:
-   ```bash
-   python scripts/sanitize-notebook.py --publish workspace/category/notebook-name
-   ```
-5. Commit and push to the repository
-
-See [`scripts/README.md`](../scripts/README.md) for detailed workflow documentation.
+See [`scripts/README.md`](../scripts/README.md) for detailed script usage.
 
 ## Configuration Management
 
@@ -198,12 +177,12 @@ Don't create categories until you have a notebook to put in them. Categories eme
 
 ## Related Documentation
 
-- [`getting-started.md`](getting-started.md) - Quick start guide for new users
+- [**Getting Started Guide**](getting-started.md) - Step-by-step tutorials for using and creating notebooks
 - [`notebooks/README.md`](../notebooks/README.md) - Catalog of available notebooks
 - [`scripts/README.md`](../scripts/README.md) - Script usage and workflow details
-- [`templates/README.md`](../templates/README.md) - Creating new notebooks
-- [`.roorules`](../.roorules) - Project conventions
+- [`templates/README.md`](../templates/README.md) - Creating new notebooks from templates
+- [`.roo/rules/`](../.roo/rules/) - Project conventions for AI-assisted development
 
 ---
 
-**Questions?** Check the [Getting Started](getting-started.md) guide or review the [WIP documents](wip/) for detailed design rationale.
+*For design rationale and planning documents, see the [WIP documents](wip/) directory.*
