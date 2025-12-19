@@ -95,23 +95,28 @@ Common configuration items:
 - Thresholds and scoring parameters
 - Custom table names
 
-### Step 4: Upload to Sentinel
+### Step 4: Create and Run a Notebook Job
 
-1. Navigate to your **Microsoft Sentinel workspace** in Azure Portal
-2. Go to **Notebooks** section
-3. Click **Upload notebook**
-4. Select your configured notebook from `workspace/`
-5. Choose an appropriate **compute** (Small, Medium, or Large pool)
+According to [Microsoft's documentation](https://learn.microsoft.com/en-us/azure/sentinel/datalake/notebook-jobs), you create notebook jobs using the **Microsoft Sentinel VS Code extension**:
 
-### Step 5: Run the Notebook
+1. Open VS Code with the **Microsoft Sentinel** extension installed
+2. Open your configured notebook file
+3. Right-click in the notebook and select **Create Sentinel Notebook Job**
+4. Configure the job:
+   - **Job name**: Descriptive name for your job
+   - **Workspace**: Select your Sentinel workspace
+   - **Compute pool**: Small, Medium, or Large based on your data volume
+   - **Schedule**: On-demand or scheduled runs
+5. Submit the job
 
-1. Open the uploaded notebook in Sentinel
-2. Select the compute pool size
-3. Wait for compute to start (may take 2-5 minutes)
-4. Run cells one at a time or use **Run All**
-5. Review outputs and results
+### Step 5: Monitor Notebook Job Execution
 
-**Tip:** Run cells individually first to understand the flow and catch any configuration issues early.
+1. View job status in the VS Code Sentinel extension
+2. Monitor execution progress and logs
+3. Wait for the compute pool to start and execute (may take 2-5 minutes)
+4. Review outputs and results once complete
+
+**Tip:** Start with on-demand runs while developing, then configure scheduled runs once the notebook is stable.
 
 ## Path 2: Create Your Own Notebook with AI Assistance
 
