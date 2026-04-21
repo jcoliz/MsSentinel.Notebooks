@@ -2,6 +2,24 @@
 
 This directory contains example Jupyter notebooks for Microsoft Sentinel data lake operations. Each notebook demonstrates specific security scenarios and operations.
 
+## Hello-World Notebooks
+
+### [Show Tables](hello-world/show-tables/show-tables.ipynb)
+
+Quick connectivity verification notebook that lists available databases and tables in your Sentinel environment. Perfect for first-time setup validation and environment discovery. Uses [`MicrosoftSentinelProvider`](hello-world/show-tables/show-tables.ipynb:30) to enumerate system tables and workspace-specific tables. Ideal for new users verifying access permissions and exploring available data sources.
+
+### [Hello CSL](hello-world/hello-csl/hello-csl.ipynb)
+
+Demonstrates loading and querying the CommonSecurityLog (CSL) table with important column filtering techniques. Includes workaround for known Parquet schema compatibility issue with `DeviceCustomFloatingPoint1` column in Sentinel data lake. Shows proper column selection patterns to avoid data type conversion errors. Essential reading for anyone working with CommonSecurityLog data.
+
+**Note:** Always scope CSL queries to specific columns to avoid schema issues. See Section 3 for column filtering example.
+
+## Custom Graph Notebooks
+
+### [PAM Complete](custom-graph/pam-complete/pam-complete.ipynb)
+
+Comprehensive demonstration of Microsoft Sentinel Custom Graph capabilities for ISV integration scenarios using synthetic data. Showcases privileged access management (PAM) vendor data combined with Microsoft security telemetry (EntraUsers, AzureActivity, AuditLogs) to perform advanced graph analytics similar to Microsoft Security Exposure Management (MSEM). Demonstrates all 5 built-in graph algorithms (Centrality, K-Hop, Reachability, Blast Radius, Ranked Paths) plus GraphFrames extensibility with synthetic data (≤50 rows per table).
+
 ## Risk Scoring Notebooks
 
 ### [User Risk Score Simple](risk-scoring/user-risk-score-simple/README.md)
