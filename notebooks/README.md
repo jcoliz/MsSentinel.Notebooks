@@ -16,6 +16,10 @@ Demonstrates loading and querying the CommonSecurityLog (CSL) table with importa
 
 ## Custom Graph Notebooks
 
+### [Hello SignIn Logs](custom-graph/hello-signin-logs/hello-signin-logs.ipynb)
+
+Foundational Custom Graph tutorial demonstrating core graph building patterns with SignInLogs and EntraUsers data. Creates a simple user-application-department graph, executes betweenness centrality analysis to identify highly connected users, and runs GQL queries for department-level access pattern analysis. Ideal starting point for learning Custom Graph fundamentals before exploring advanced scenarios.
+
 ### [PAM Complete](custom-graph/pam-complete/pam-complete.ipynb)
 
 Comprehensive demonstration of Microsoft Sentinel Custom Graph capabilities for ISV integration scenarios using synthetic data. Showcases privileged access management (PAM) vendor data combined with Microsoft security telemetry (EntraUsers, AzureActivity, AuditLogs) to perform advanced graph analytics similar to Microsoft Security Exposure Management (MSEM). Demonstrates all 5 built-in graph algorithms (Centrality, K-Hop, Reachability, Blast Radius, Ranked Paths) plus GraphFrames extensibility with synthetic data (≤50 rows per table).
